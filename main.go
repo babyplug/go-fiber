@@ -1,9 +1,14 @@
 package main
 
 import (
+	"fmt"
+
+	"github.com/babyplug/go-fiber/src/auth"
 	"github.com/babyplug/go-fiber/src/author"
 	"github.com/babyplug/go-fiber/src/database"
+	"github.com/babyplug/go-fiber/src/user"
 	"github.com/gofiber/fiber/v2"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -11,11 +16,14 @@ var (
 )
 
 func main() {
+	setupViper()
 	database.NewMySQLConnect()
 
 	api := app.Group("/api")
 
 	author.NewAuthorController(api)
+	user.NewUserController(api)
+	auth.NewAuthController(api)
 
 	app.Use(func(c *fiber.Ctx) error {
 		return c.Status(404).JSON(fiber.Map{
@@ -24,4 +32,14 @@ func main() {
 	})
 
 	app.Listen(":3000")
+}
+
+func setupViper() {
+	viper.SetConfigName("config")
+	viper.SetConfigType("yml")
+	viper.AddConfigPath(".")
+	err := viper.ReadInConfig() // Find and read the config file
+	if err != nil {             // Handle errors reading the config file
+		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+	}
 }
