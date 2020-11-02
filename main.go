@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/babyplug/go-fiber/src/album"
 	"github.com/babyplug/go-fiber/src/auth"
 	"github.com/babyplug/go-fiber/src/author"
 	"github.com/babyplug/go-fiber/src/database"
@@ -26,6 +27,7 @@ func main() {
 	user.NewUserController(api)
 	auth.NewAuthController(api)
 	photo.NewPhotoController(api)
+	album.NewAlbumController(api)
 
 	app.Use(func(c *fiber.Ctx) error {
 		return c.Status(404).JSON(fiber.Map{
