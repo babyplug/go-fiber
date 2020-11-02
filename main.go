@@ -8,6 +8,7 @@ import (
 	"github.com/babyplug/go-fiber/src/author"
 	"github.com/babyplug/go-fiber/src/database"
 	"github.com/babyplug/go-fiber/src/photo"
+	"github.com/babyplug/go-fiber/src/photo_metadata"
 	"github.com/babyplug/go-fiber/src/user"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/viper"
@@ -28,6 +29,7 @@ func main() {
 	auth.NewAuthController(api)
 	photo.NewPhotoController(api)
 	album.NewAlbumController(api)
+	photo_metadata.NewPhotoMetadataController(api)
 
 	app.Use(func(c *fiber.Ctx) error {
 		return c.Status(404).JSON(fiber.Map{
