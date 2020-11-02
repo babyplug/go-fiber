@@ -1,17 +1,12 @@
 package author
 
 import (
+	"github.com/babyplug/go-fiber/src/models"
 	"gorm.io/gorm"
 )
 
-type Author struct {
-	ID   uint
-	Name string
-	gorm.Model
-}
-
 type AuthorRepository interface {
-	FindAll() ([]Author, error)
+	FindAll() ([]models.Author, error)
 }
 
 type AuthorRepositoryImpl struct {
@@ -22,8 +17,8 @@ func NewAuthorRepository(db *gorm.DB) *AuthorRepositoryImpl {
 	return &AuthorRepositoryImpl{db}
 }
 
-func (authorRepo *AuthorRepositoryImpl) FindAll() ([]Author, error) {
-	var authors []Author
+func (authorRepo *AuthorRepositoryImpl) FindAll() ([]models.Author, error) {
+	var authors []models.Author
 	authorRepo.DB.Find(&authors)
 
 	return authors, nil
