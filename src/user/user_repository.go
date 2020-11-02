@@ -3,31 +3,20 @@ package user
 import (
 	"errors"
 
+	"github.com/babyplug/go-fiber/src/models"
 	"gorm.io/gorm"
 )
 
-type User struct {
-	ID        uint
-	Name      string
-	Email     *string
-	Age       uint8
-	Username  string
-	Password  string `json:"-"`
-	FirstName string
-	LastName  string
-	gorm.Model
-}
-
 type UserRepository interface {
-	FindAll() ([]User, error)
+	FindAll() ([]models.User, error)
 
-	FindByID() (User, error)
+	FindByID() (models.User, error)
 
-	UpdateByID(userID int) (User, error)
+	UpdateByID(userID int) (models.User, error)
 
-	DeleteByID(userID int) (User, error)
+	DeleteByID(userID int) (models.User, error)
 
-	FindByUsername(username string) (User, error)
+	FindByUsername(username string) (models.User, error)
 }
 
 type UserRepositoryImpl struct {
@@ -38,15 +27,15 @@ func NewUserRepository(db *gorm.DB) *UserRepositoryImpl {
 	return &UserRepositoryImpl{db}
 }
 
-func (userRepo *UserRepositoryImpl) FindAll() ([]User, error) {
-	var users []User
+func (userRepo *UserRepositoryImpl) FindAll() ([]models.User, error) {
+	var users []models.User
 	userRepo.DB.Find(&users)
 
 	return users, nil
 }
 
-func (userRepo *UserRepositoryImpl) FindByID(userID int) (User, error) {
-	var user User
+func (userRepo *UserRepositoryImpl) FindByID(userID int) (models.User, error) {
+	var user models.User
 	if err := userRepo.DB.Where("id = ?", userID).First(&user).Error; err != nil {
 		return user, errors.New("User not found!")
 	}
@@ -64,8 +53,8 @@ func (userRepo *UserRepositoryImpl) DeleteByID(userID int) error {
 	return nil
 }
 
-func (userRepo *UserRepositoryImpl) FindByUsername(username string) (User, error) {
-	var user User
+func (userRepo *UserRepositoryImpl) FindByUsername(username string) (models.User, error) {
+	var user models.User
 	if err := userRepo.DB.Where("username = ?", username).First(&user).Error; err != nil {
 		return user, errors.New("User not found!")
 	}
