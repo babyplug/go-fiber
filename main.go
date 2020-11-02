@@ -6,6 +6,7 @@ import (
 	"github.com/babyplug/go-fiber/src/auth"
 	"github.com/babyplug/go-fiber/src/author"
 	"github.com/babyplug/go-fiber/src/database"
+	"github.com/babyplug/go-fiber/src/photo"
 	"github.com/babyplug/go-fiber/src/user"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/viper"
@@ -24,6 +25,7 @@ func main() {
 	author.NewAuthorController(api)
 	user.NewUserController(api)
 	auth.NewAuthController(api)
+	photo.NewPhotoController(api)
 
 	app.Use(func(c *fiber.Ctx) error {
 		return c.Status(404).JSON(fiber.Map{
