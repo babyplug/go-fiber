@@ -31,17 +31,17 @@ func createToken(userid uint) (string, error) {
 }
 
 func Login(credentials *dto.Credentials) (string, error) {
-	user, err := user.FindByUsername(credentials.Username)
+	userDTO, err := user.FindByUsername(credentials.Username)
 	if err != nil {
 		return "", errors.New("Username or password is not correct")
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(credentials.Password))
+	err = bcrypt.CompareHashAndPassword([]byte(userDTO.Password), []byte(credentials.Password))
 	if err != nil {
 		return "", errors.New("Username or password is not correct")
 	}
 
-	token, err := createToken(user.ID)
+	token, err := createToken(userDTO.ID)
 	if err != nil {
 		return "", errors.New("Server error please contact admin")
 	}
